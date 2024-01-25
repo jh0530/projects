@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_LINE_LEN 10000
+#define MAX_LINES 10000
+
+int numOfLines = 0;
+char inputLines[MAX_LINES][MAX_LINE_LEN];
+char filteredLines[MAX_LINES][MAX_LINE_LEN];
+
+void readFile(char* line) {
+    char* token = strtok(line, " \t\n\r");
+    int first_token = 1;
+
+    while (token != NULL) {
+        if (!first_token) {
+            printf(" ");
+        }
+
+        // Check each character in the token for punctuation
+        for (int i = 0; token[i] != '\0'; i++) {
+            if (!ispunct(token[i])) {
+                char lowerCaseToken = tolower(token[i]);
+                printf("%c", lowerCaseToken);
+                first_token = 0;
+            }
+        }
+
+        token = strtok(NULL, " \t\n\r");
+    }
+}
+
+int main(){
+  char buffer[2000];
+  while (fgets(buffer,sizeof(buffer),stdin) != NULL){
+    buffer[strcspn(buffer, "\n")] = '\0'; //removes newline from EOL
+    readFile(buffer);
+    printf("\n");
+  }
+}
+

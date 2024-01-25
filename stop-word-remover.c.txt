@@ -1,0 +1,39 @@
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#define MAX_WORD_LEN 10000
+
+int isStopWord(const char *word) {
+    const char *stopWords[] = {"the", "a", "an", "of", "for", "to", "and", "but", "yet", "Yet"};
+    int numStopWords = sizeof(stopWords) / sizeof(stopWords[0]);
+
+    for (int i = 0; i < numStopWords; i++) {
+        if (strcmp(word, stopWords[i]) == 0) {
+            return 1;  // It's a stop word
+        }
+    }
+
+    return 0;  // It's not a stop word
+}
+
+int main() {
+        char buffer[MAX_WORD_LEN];
+    char *space;
+    while (fgets(buffer, MAX_WORD_LEN, stdin) != NULL) {
+        char *word = strtok(buffer, " \t\n");  // Tokenize the line into words
+        space = "";
+        while (word != NULL) {
+            if (!isStopWord(word)) {
+                printf("%s%s", space, word);
+                space = " ";
+                                }
+            word = strtok(NULL, " \t\n");  // Get the next word
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+
+// gcc -Wall -std=c11 -o stop-word-remover stop-word-remover.c
